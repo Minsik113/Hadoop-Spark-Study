@@ -1,0 +1,46 @@
+# 하둡 예제
+cd /usr/local/hadoop
+sudo fs -ls /example
+# 혹시 파일 있으면 삭제
+hadoop fs -rm -r /example
+hadoop fs -mkdir /example
+hadoop fs -copyFromLocal README.txt /example
+hadoop fs -ls /example
+
+cd /usr/local/hadoop/share/hadoop/mapreduce
+hadoop jar hadoop-mapreduce-examples-3.3.0.jar wordcount /example/README.txt /output
+hadoop fs -ls /output
+hadoop fs -cat /output/part-r-00000 | more
+hadoop fs -get /output/part-r-00000 /home/bigdata/Test.txt
+
+#파이어폭스에서 확인
+http://localhost:9870/explorer.html#/
+상단 오른쪽 utility -> Browse the filesystem 클릭
+Name에 output이라는게 나옴.
+output들어가서 part-r-00000누르고 왼쪽상단 Download누르면 wordcount 결과가 나옴.
+
+#예제2
+1. /usr/sesac 디렉토리 생성
+/usr/local/hadoop/NOTICE.txt
+2. .txt파일 하나 찾아서 wordcount 해서 ui결과 확인
+
+#1답 
+hadoop fs -mkdir -p /user/sesac
+hadoop fs -copyFromLocal /usr/local/hadoop/NOTICE.txt /user/sesac
+#2답
+cd /usr/local/hadoop/share/hadoop/mapreduce
+hadoop jar hadoop-mapreduce-examples-3.3.0.jar wordcount /user/sesac/NOTICE.txt /user/sesac/output
+
+
+
+
+# 아래는 아님.
+cd /usr/sesac
+hadoop fs -mkdir /sesac
+hadoop fs -copyFromLocal NOTICE.txt /sesac
+hadoop fs -ls /sesac
+cd /usr/local/hadoop/share/hadoop/mapreduce
+hadoop jar hadoop-mapreduce-examples-3.3.0.jar wordcount /sesac/NOTICE.txt /output1
+hadoop fs -ls /output1
+hadoop fs -cat /output1/part-r-00000 | more
+hadoop fs -get /output1/part-r-00000 /home/bigdata/Test1.txt
